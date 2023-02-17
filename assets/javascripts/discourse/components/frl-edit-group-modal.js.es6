@@ -7,6 +7,7 @@ export default Ember.Component.extend({
     this.set("selectedGroupId", this.get("group.id"));
     this.set("topicLimit", this.get("group.topic_limit"));
     this.set("postLimit", this.get("group.post_limit"));
+    this.set("cooldown", this.get("group.cooldown"));
   },
 
   actions: {
@@ -40,17 +41,23 @@ export default Ember.Component.extend({
     return parseInt(postLimit);
   },
 
-  @computed("formatedGroupId", "formatedTopicLimit", "formatedPostLimit")
-  disabled(groupId, topicLimit, postLimit) {
-    return isNaN(groupId) || (groupId < 1) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1);
+  @computed("cooldown")
+  formatedCooldown(cooldown) {
+    return parseInt(cooldown);
   },
 
-  @computed("formatedGroupId", "formatedTopicLimit", "formatedPostLimit")
-  _group(groupId, topicLimit, postLimit) {
+  @computed("formatedGroupId", "formatedTopicLimit", "formatedPostLimit", "formatedCooldown")
+  disabled(groupId, topicLimit, postLimit, cooldown) {
+    return isNaN(groupId) || (groupId < 1) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1) || isNaN(cooldown) || (cooldown < 1);
+  },
+
+  @computed("formatedGroupId", "formatedTopicLimit", "formatedPostLimit", "formatedCooldown")
+  _group(groupId, topicLimit, postLimit, cooldown) {
     return {
       id: groupId,
       topic_limit: topicLimit,
-      post_limit: postLimit
+      post_limit: postLimit,
+      cooldown: cooldown
     };
   },
 

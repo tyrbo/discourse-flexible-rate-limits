@@ -31,6 +31,7 @@ en:
         group_name: "Group Name"
         post_limit: "Post Limit"
         topic_limit: "Topic Limit"
+        cooldown: "Cooldown (in minutes)"
         global_rate_limits: "Global Rate Limits"
         error:
           duplicate_category_group_name: "Please choose another category group name"

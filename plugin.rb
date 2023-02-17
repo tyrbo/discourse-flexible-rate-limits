@@ -40,7 +40,7 @@ after_initialize {
         if SiteSetting.flexible_rate_limits_enabled
           frl = FlexibleRateLimits.new(self.user, self.category_id)
           if frl.category_group_name
-            RateLimiter.new(self.user, "cg-#{frl.category_group_name}-topic", frl.topic_limit, 1.day.to_i)
+            RateLimiter.new(self.user, "cg-#{frl.category_group_name}-topic", frl.topic_limit, frl.cooldown.minutes.to_i)
           else
             apply_per_day_rate_limit_for("topics", :max_topics_per_day)
           end
@@ -65,7 +65,7 @@ after_initialize {
       frl = FlexibleRateLimits.new(self.user, self.topic&.category_id) # int or nil
 
       if frl.category_group_name
-        RateLimiter.new(self.user, "cg-#{frl.category_group_name}-post", frl.post_limit, 1.day.to_i)
+        RateLimiter.new(self.user, "cg-#{frl.category_group_name}-post", frl.post_limit, frl.cooldown.minutes.to_i)
       end
     end
 

@@ -7,6 +7,7 @@ export default Ember.Component.extend({
     this.set("categoryGroupName", this.get("model.category_group.name"));
     this.set("topicLimit", this.get("model.category_group.topic_limit"));
     this.set("postLimit", this.get("model.category_group.post_limit"));
+    this.set("cooldown", this.get("model.category_group.cooldown"));
   },
 
   actions: {
@@ -41,9 +42,9 @@ export default Ember.Component.extend({
     }
   },
 
-  @computed("formatedCategoryGroupName", "formatedTopicLimit", "formatedPostLimit")
-  disabled(categoryGroupName, topicLimit, postLimit) {
-    return Ember.isEmpty(categoryGroupName) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1);
+  @computed("formatedCategoryGroupName", "formatedTopicLimit", "formatedPostLimit", "formatedCooldown")
+  disabled(categoryGroupName, topicLimit, postLimit, cooldown) {
+    return Ember.isEmpty(categoryGroupName) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1) || isNaN(cooldown) || (cooldown < 1);
   },
 
   @computed("categoryGroupName")
@@ -61,6 +62,11 @@ export default Ember.Component.extend({
     return parseInt(postLimit);
   },
 
+  @computed("cooldown")
+  formatedCooldown(cooldown) {
+    return parseInt(cooldown);
+  },
+
   @computed("model.category_groups")
   categoryGroupNames(categoryGroups) {
     if (!categoryGroups) return [];
@@ -70,12 +76,13 @@ export default Ember.Component.extend({
     });
   },
 
-  @computed("formatedCategoryGroupName", "formatedTopicLimit", "formatedPostLimit")
-  categoryGroup(categoryGroupName, topicLimit, postLimit) {
+  @computed("formatedCategoryGroupName", "formatedTopicLimit", "formatedPostLimit", "formatedCooldown")
+  categoryGroup(categoryGroupName, topicLimit, postLimit, cooldown) {
     return {
       name: categoryGroupName,
       topic_limit: topicLimit,
-      post_limit: postLimit
+      post_limit: postLimit,
+      cooldown: cooldown
     };
   },
 

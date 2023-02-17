@@ -1,6 +1,6 @@
 class FlexibleRateLimits
 
-  attr_reader :topic_limit, :post_limit, :category_group_name
+  attr_reader :cooldown, :topic_limit, :post_limit, :category_group_name
 
   def initialize(user, category_id)
     @user           = user
@@ -15,7 +15,7 @@ class FlexibleRateLimits
     @category_group_name      = category_group["name"]
     group_ids                 = @user.groups.pluck(:id)
     group                     = (category_group["groups"] || []).find { |g| group_ids.include?(g["id"]) }
-    @topic_limit, @post_limit = (group || category_group).slice("topic_limit", "post_limit").values
+    @cooldown, @topic_limit, @post_limit = (group || category_group).slice("cooldown", "topic_limit", "post_limit").values
     @group                    = Group.find(group["id"]) if group
   end
 
@@ -54,7 +54,7 @@ class FlexibleRateLimits
   end
 
   def to_stats(setting, max, key = nil)
-    rate_limiter = RateLimiter.new(@user, key, max, 1.day.to_i) if key
+    rate_limiter = RateLimiter.new(@user, key, max, cooldown.minutes.to_i) if key
 
     {
       setting: setting,

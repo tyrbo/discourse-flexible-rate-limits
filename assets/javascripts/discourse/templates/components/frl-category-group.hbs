@@ -25,6 +25,7 @@
         <th>{{i18n "flexible_rate_limits.admin.group_name"}}</th>
         <th>{{i18n "flexible_rate_limits.admin.post_limit"}}</th>
         <th>{{i18n "flexible_rate_limits.admin.topic_limit"}}</th>
+        <th>{{i18n "flexible_rate_limits.admin.cooldown"}}</th>
         <th></th>
       </tr>
     </thead>
@@ -34,16 +35,17 @@
           <td>{{frlGroupName groups group.id}}</td>
           <td>{{group.post_limit}}</td>
           <td>{{group.topic_limit}}</td>
+          <td>{{group.cooldown}}</td>
           <td>
-            {{d-button
-              action=(action "removeGroup" group)
-              icon="times"
-              class="btn-danger"
-            }}
             {{d-button
               action=(action "editGroup" group)
               icon="pencil"
               class="btn-primary"
+            }}
+            {{d-button
+              action=(action "removeGroup" group)
+              icon="times"
+              class="btn-danger"
             }}
           </td>
         </tr>
@@ -53,6 +55,7 @@
         <td>{{i18n "flexible_rate_limits.admin.default"}}</td>
         <td>{{categoryGroup.topic_limit}}</td>
         <td>{{categoryGroup.post_limit}}</td>
+        <td>{{categoryGroup.cooldown}}</td>
         <td></td>
       </tr>
     </tbody>

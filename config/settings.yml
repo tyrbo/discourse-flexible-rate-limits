@@ -1,10 +1,10 @@
 plugins:
   flexible_rate_limits_enabled:
-    default: true
+    default: false
     client: true
   flexible_rate_limits_stats:
-    default: true
+    default: false
     client: true
   flexible_rate_limits_debug:
-    default: true
+    default: false
     client: true
