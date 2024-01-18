@@ -1,7 +1,8 @@
+import Component from "@ember/component";
 import computed from "ember-addons/ember-computed-decorators";
 import showModal from "discourse/lib/show-modal";
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ["frl-category-group"],
 
   actions: {

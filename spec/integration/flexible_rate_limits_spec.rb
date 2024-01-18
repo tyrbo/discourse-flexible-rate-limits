@@ -76,7 +76,6 @@ describe("flexible_rate_limits") {
     SiteSetting.unique_posts_mins = 0 # How many minutes before a user can make a post with the same content again
     SiteSetting.rate_limit_create_topic = 0 # After creating a topic, users must wait (n) seconds before creating another topic
     SiteSetting.rate_limit_create_post = 0 # After posting, users must wait (n) seconds before creating another post.
-    SiteSetting.rate_limit_new_user_create_topic = 0 # After creating a topic, new users must wait (n) seconds before creating another topic.
     SiteSetting.rate_limit_new_user_create_post = 0 # After posting, new users must wait (n) seconds before creating another post.
     SiteSetting.max_topics_per_day = 100 # Maximum number of topics a user can create per day
     SiteSetting.max_topics_in_first_day = 100 # The maximum number of topics a user is allowed to create in the 24 hour period after creating their first post
@@ -95,11 +94,6 @@ describe("flexible_rate_limits") {
       context("new user") {
 
         context("topic") {
-
-          it("should respect rate_limit_new_user_create_topic") {
-            SiteSetting.rate_limit_new_user_create_topic = 100
-            _create_topic(new_user, category.id, 4, 1)
-          }
 
           it("should respect max_topics_in_first_day") {
             SiteSetting.max_topics_in_first_day = 2

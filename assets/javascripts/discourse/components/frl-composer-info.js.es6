@@ -1,9 +1,11 @@
+import Component from "@ember/component";
 import Composer from "discourse/models/composer";
 import { default as computed, on, observes } from "ember-addons/ember-computed-decorators";
+import { cancel, later, scheduleOnce } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import showModal from "discourse/lib/show-modal";
 
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ["frl-composer-info"],
 
   rawData: null,
@@ -47,7 +49,7 @@ export default Ember.Component.extend({
 
   setupFetcher() {
     this.cancelRunner();
-    const fetcher = Ember.run.scheduleOnce("afterRender", () => {
+    const fetcher = scheduleOnce("afterRender", () => {
       this.fetchData();
     });
     this.set("fetcher", fetcher);
@@ -72,7 +74,7 @@ export default Ember.Component.extend({
 
     const path = `rawData.${this.get("limitType")}.wait`;
 
-    const counter = Ember.run.later(this, () => {
+    const counter = later(this, () => {
       this.set(path, this.get(path) - 1);
       this.updateModalClock();
       this.countDown();
@@ -110,7 +112,7 @@ export default Ember.Component.extend({
 
   cancelRunner() {
     ["fetcher", "counter"].forEach((i) => {
-      if (this.get(i)) Ember.run.cancel(this.get(i));
+      if (this.get(i)) cancel(this.get(i));
     });
   },
 

@@ -1,6 +1,9 @@
+import Component from "@ember/component";
+import Object from "@ember/object";
+import { isEmpty } from "@ember/utils";
 import { default as computed, on } from "ember-addons/ember-computed-decorators";
 
-export default Ember.Component.extend({
+export default Component.extend({
   
   @on("didReceiveAttrs")
   _setup() {
@@ -35,7 +38,7 @@ export default Ember.Component.extend({
       if (this.get("model.category_group")) {
         this.get("model.category_group").setProperties(this.get("categoryGroup"));
       } else {
-        this.get("model.category_groups").addObject(Ember.Object.create(this.get("categoryGroup")));
+        this.get("model.category_groups").addObject(Object.create(this.get("categoryGroup")));
       }
 
       this._closeModal();
@@ -44,7 +47,7 @@ export default Ember.Component.extend({
 
   @computed("formatedCategoryGroupName", "formatedTopicLimit", "formatedPostLimit", "formatedCooldown")
   disabled(categoryGroupName, topicLimit, postLimit, cooldown) {
-    return Ember.isEmpty(categoryGroupName) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1) || isNaN(cooldown) || (cooldown < 1);
+    return isEmpty(categoryGroupName) || isNaN(topicLimit) || (topicLimit < 1) || isNaN(postLimit) || (postLimit < 1) || isNaN(cooldown) || (cooldown < 1);
   },
 
   @computed("categoryGroupName")

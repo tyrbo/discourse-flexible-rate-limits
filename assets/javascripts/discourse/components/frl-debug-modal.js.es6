@@ -1,7 +1,7 @@
-import ModalFunctionality from "discourse/mixins/modal-functionality";
+import Component from "@ember/component";
 import computed from "ember-addons/ember-computed-decorators";
 
-export default Ember.Controller.extend(ModalFunctionality, {
+export default Component.extend({
 
   @computed("model.limitType")
   title(limitType) {

@@ -1,4 +1,5 @@
 import { ajax } from "discourse/lib/ajax";
+import Object from "@ember/object";
 import DiscourseRoute from "discourse/routes/discourse";
 
 export default DiscourseRoute.extend({
@@ -11,8 +12,8 @@ export default DiscourseRoute.extend({
     return ajax("/admin/plugins/flexible-rate-limits.json").then((data) => {
 
       data.category_groups = (data.category_groups || []).map((cg) => {
-        cg.groups = (cg.groups || []).map(g => Ember.Object.create(g));
-        return Ember.Object.create(cg);
+        cg.groups = (cg.groups || []).map(g => Object.create(g));
+        return Object.create(cg);
       });
 
       return data;
