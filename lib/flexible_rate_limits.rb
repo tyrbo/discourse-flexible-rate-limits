@@ -54,7 +54,7 @@ class FlexibleRateLimits
   end
 
   def to_stats(setting, max, key = nil)
-    rate_limiter = RateLimiter.new(@user, key, max, cooldown.minutes.to_i) if key
+    rate_limiter = RateLimiter.new(@user, key, max, cooldown&.minutes&.to_i || 0) if key
 
     {
       setting: setting,

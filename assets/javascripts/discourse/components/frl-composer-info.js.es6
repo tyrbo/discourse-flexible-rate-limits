@@ -1,11 +1,15 @@
 import Composer from "discourse/models/composer";
 import { default as computed, on, observes } from "ember-addons/ember-computed-decorators";
 import { ajax } from "discourse/lib/ajax";
-import showModal from "discourse/lib/show-modal";
+import Component from "@ember/component";
+import { cancel, later, scheduleOnce } from "@ember/runloop";
+import { inject as service } from "@ember/service";
+import { action } from "@ember/object";
 
-export default Ember.Component.extend({
+import DebugModal from "../components/frl-debug-modal";
+
+export default Component.extend({
   classNames: ["frl-composer-info"],
-
   rawData: null,
 
   didInsertElement() {
@@ -47,7 +51,7 @@ export default Ember.Component.extend({
 
   setupFetcher() {
     this.cancelRunner();
-    const fetcher = Ember.run.scheduleOnce("afterRender", () => {
+    const fetcher = scheduleOnce("afterRender", () => {
       this.fetchData();
     });
     this.set("fetcher", fetcher);
@@ -72,7 +76,7 @@ export default Ember.Component.extend({
 
     const path = `rawData.${this.get("limitType")}.wait`;
 
-    const counter = Ember.run.later(this, () => {
+    const counter = later(this, () => {
       this.set(path, this.get(path) - 1);
       this.updateModalClock();
       this.countDown();
@@ -110,22 +114,21 @@ export default Ember.Component.extend({
 
   cancelRunner() {
     ["fetcher", "counter"].forEach((i) => {
-      if (this.get(i)) Ember.run.cancel(this.get(i));
+      if (this.get(i)) cancel(this.get(i));
     });
   },
 
-  actions: {
-    showDebugModal() {
-      if (!this.siteSettings.flexible_rate_limits_debug) return;
+  @action
+  showDebugModal() {
+    if (!this.siteSettings.flexible_rate_limits_debug) return;
 
-      const model = {
-        limitType: this.get("limitType"),
-        data: this.get("data"),
-        newUser: this.get("rawData.new_user"),
-        showCounter: this.get("showCounter")
-      }
-
-      this.set("modal", showModal("frl-debug-modal", { model }));
+    const model = {
+      limitType: this.get("limitType"),
+      data: this.get("data"),
+      newUser: this.get("rawData.new_user"),
+      showCounter: this.get("showCounter")
     }
+
+    // this.modal.show(DebugModal, { model });
   }
 });

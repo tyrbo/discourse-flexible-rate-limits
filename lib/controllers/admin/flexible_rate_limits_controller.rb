@@ -36,7 +36,6 @@ class Admin::FlexibleRateLimitsController < Admin::AdminController
         unique_posts_mins
         rate_limit_create_topic
         rate_limit_create_post
-        rate_limit_new_user_create_topic
         rate_limit_new_user_create_post
         max_topics_per_day
         max_topics_in_first_day

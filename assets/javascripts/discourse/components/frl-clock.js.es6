@@ -1,6 +1,7 @@
 import { default as computed, observes } from "ember-addons/ember-computed-decorators";
+import Component from "@ember/component";
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   classNames: ["frl-clock"],
 

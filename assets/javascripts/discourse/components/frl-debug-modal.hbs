@@ -1,4 +1,4 @@
-{{#d-modal-body id="frl-debug-modal" title=title}}
+{{#d-modal id="frl-debug-modal" title=title}}
 
   <table class="table">
     <tbody>
@@ -27,23 +27,19 @@
     </tbody>
   </table>
 
-{{/d-modal-body}}
+  <div class="modal-footer">
+    <div class="frl-flex">
+      {{d-button
+        action="_closeModal"
+        icon="times"
+        class="btn-large btn-primary"
+        label="flexible_rate_limits.debug_modal.close"}}
 
-<div class="modal-footer">
-  <div class="frl-flex">
-
-    {{d-button
-      action="closeModal"
-      icon="times"
-      class="btn-large btn-primary"
-      label="flexible_rate_limits.debug_modal.close"}}
-
-    <div class="frl-flex-fill frl-flex-center">
-      {{#if model.showCounter}}
-        {{frl-clock wait=model.data.wait}}
-      {{/if}}
+      <div class="frl-flex-fill frl-flex-center">
+        {{#if model.showCounter}}
+          {{frl-clock wait=model.data.wait}}
+        {{/if}}
+      </div>
     </div>
-
   </div>
-
-</div>
+{{/d-modal}}
