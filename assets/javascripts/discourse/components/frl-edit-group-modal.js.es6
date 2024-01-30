@@ -1,6 +1,8 @@
 import { default as computed, on } from "ember-addons/ember-computed-decorators";
+import Component from "@ember/component";
+import Object from "@ember/object";
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   @on("didReceiveAttrs")
   _setup() {
@@ -19,10 +21,10 @@ export default Ember.Component.extend({
       if (this.get("group")) {
         this.get("group").setProperties(group);
       } else {
-        this.get("currentGroups").addObject(Ember.Object.create(group));
+        this.get("currentGroups").addObject(Object.create(group));
       }
 
-      this.sendAction("closeModal");
+      this.closeModal();
     }
   },
 

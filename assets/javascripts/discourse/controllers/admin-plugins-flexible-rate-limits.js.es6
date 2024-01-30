@@ -1,32 +1,39 @@
 import showModal from "discourse/lib/show-modal";
 import { ajax } from "discourse/lib/ajax";
+import Controller from "@ember/controller";
+import { inject as service } from "@ember/service";
+import { action } from "@ember/object";
 
-export default Ember.Controller.extend({
+import EditCategoryGroup from "../components/edit-category-group";
 
-  availableCategoryIds: [],
+export default class extends Controller {
+  @service modal;
 
-  actions: {
-    addCategoryGroup() {
-      this.set("model.category_group", null);
-      showModal("edit-category-group", { model: this.get("model") });
-    },
+  availableCategoryIds = [];
 
-    editCategoryGroup(categoryGroup) {
-      this.set("model.category_group", categoryGroup);
-      showModal("edit-category-group", { model: this.get("model") });
-    },
+  @action
+  addCategoryGroup() {
+    this.set("model.category_group", null);
+    this.modal.show(EditCategoryGroup, { model: this.get("model") });
+  }
 
-    deleteCategoryGroup(categoryGroup) {
-      this.get("model.category_groups").removeObject(categoryGroup);
-      if (categoryGroup.categories) this.get("availableCategoryIds").removeObjects(categoryGroup.categories);
-    },
+  @action
+  editCategoryGroup(categoryGroup) {
+    this.set("model.category_group", categoryGroup);
+    this.modal.show(EditCategoryGroup, { model: this.get("model") });
+  }
 
-    saveCategoryGroups() {
-      if (!this.get("model.category_groups")) return;
-      this.save();
-    }
+  @action
+  deleteCategoryGroup(categoryGroup) {
+    this.get("model.category_groups").removeObject(categoryGroup);
+    if (categoryGroup.categories) this.get("availableCategoryIds").removeObjects(categoryGroup.categories);
+  }
 
-  },
+  @action
+  saveCategoryGroups() {
+    if (!this.get("model.category_groups")) return;
+    this.save();
+  }
 
   save() {
     this.set("disableSave", true);
@@ -39,4 +46,4 @@ export default Ember.Controller.extend({
       .finally(() => this.set("disableSave", false) );
   }
 
-});
+}

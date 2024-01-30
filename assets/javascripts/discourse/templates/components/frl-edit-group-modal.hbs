@@ -1,4 +1,4 @@
-{{#d-modal-body id="frl-edit-group-modal" title="flexible_rate_limits.admin.group"}}
+{{#d-modal id="frl-edit-group-modal" title="flexible_rate_limits.admin.group"}}
 
   <table class="flr-table-modal">
     <tbody>
@@ -35,12 +35,11 @@
     </tbody>
   </table>
 
-{{/d-modal-body}}
-
-<div class="modal-footer">
-  {{d-button
-    disabled=disabled
-    action="save"
-    class="btn-large btn-primary"
-    label="flexible_rate_limits.admin.save"}}
-</div>
+  <div class="modal-footer">
+    {{d-button
+      disabled=disabled
+      action="save"
+      class="btn-large btn-primary"
+      label="flexible_rate_limits.admin.save"}}
+  </div>
+{{/d-modal}}

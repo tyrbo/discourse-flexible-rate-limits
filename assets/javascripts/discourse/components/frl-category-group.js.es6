@@ -1,53 +1,67 @@
 import computed from "ember-addons/ember-computed-decorators";
-import showModal from "discourse/lib/show-modal";
+import Component from "@ember/component";
+import { inject as service } from "@ember/service";
+import { action } from "@ember/object";
 
-export default Ember.Component.extend({
+import EditGroup from "../components/frl-edit-group";
+
+export default Component.extend({
   classNames: ["frl-category-group"],
+  modal: service(),
 
-  actions: {
-    edit() {
-      this.sendAction("editCategoryGroup", this.get("categoryGroup"));
-    },
+  @action
+  edit() {
+    this.editCategoryGroup(this.get("categoryGroup"));
+  },
 
-    delete() {
-      this.sendAction("deleteCategoryGroup", this.get("categoryGroup"));
-    },
+  @action
+  delete() {
+    this.deleteCategoryGroup(this.get("categoryGroup"));
+  },
 
-    addGroup() {
-      if (!this.get("categoryGroup.groups")) {
-        this.set("categoryGroup.groups", []);
-      }
-      showModal("frl-edit-group", { model: { groups: this.get("groups"), currentGroups: this.get("categoryGroup.groups") } });
-    },
-
-    editGroup(group) {
-      showModal("frl-edit-group", { model: { groups: this.get("groups"), currentGroups: this.get("categoryGroup.groups"), group: group } });
-    },
-
-    removeGroup(group) {
-      this.get("categoryGroup.groups").removeObject(group);
-    },
-
-    addCategory() {
-      const categoryId = this.get("formatedCategoryId");
-
-      if (isNaN(categoryId)) return;
-      if (!this.get("categoryGroup.categories")) this.set("categoryGroup.categories", []);
-
-      this.get("categoryGroup.categories").addObject(categoryId);
-      this.get("availableCategoryIds").removeObject(categoryId);
-      this.set("selectedCategoryId", null);
-    },
-
-    deleteCategory(categoryId) {
-      this.get("categoryGroup.categories").removeObject(categoryId);
-      this.get("availableCategoryIds").addObject(categoryId);
+  @action
+  addGroup() {
+    if (!this.get("categoryGroup.groups")) {
+      this.set("categoryGroup.groups", []);
     }
+    this.modal.show(EditGroup, { model: { groups: this.get("groups"), currentGroups: this.get("categoryGroup.groups") } });
+  },
+
+  @action
+  editGroup(group) {
+    this.modal.show(EditGroup, { model: { groups: this.get("groups"), currentGroups: this.get("categoryGroup.groups"), group: group } });
+  },
+
+  @action
+  removeGroup(group) {
+    this.get("categoryGroup.groups").removeObject(group);
+  },
+
+  @action
+  addCategory() {
+    const categoryId = this.get("formatedCategoryId");
+
+    if (isNaN(categoryId)) return;
+    if (!this.get("categoryGroup.categories")) this.set("categoryGroup.categories", []);
+
+    this.get("categoryGroup.categories").addObject(categoryId);
+    this.get("availableCategoryIds").removeObject(categoryId);
+    this.set("selectedCategoryId", null);
+  },
+
+  @action
+  deleteCategory(categoryId) {
+    this.get("categoryGroup.categories").removeObject(categoryId);
+    this.get("availableCategoryIds").addObject(categoryId);
+  },
+
+  @action
+  _closeModal() {
+      this.closeModal();
   },
 
   @computed("selectedCategoryId")
   formatedCategoryId(categoryId) {
     return parseInt(categoryId);
   }
-
 });
