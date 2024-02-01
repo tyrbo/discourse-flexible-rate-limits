@@ -73,28 +73,4 @@ after_initialize {
       RateLimiter.new(user, "first-day-replies-per-day", SiteSetting.max_replies_in_first_day, 1.day.to_i)
     end
   }
-
-  require_dependency "rate_limiter"
-  RateLimiter.class_eval {
-
-    alias_method :orig_remaining, :remaining
-    def remaining
-      return orig_remaining if !SiteSetting.flexible_rate_limits_enabled
-
-      arr = redis.lrange(prefixed_key, 0, @max) || []
-      t0 = Time.now.to_i
-      arr.reject! { |a| (t0 - a.to_i) > @secs }
-      @max - arr.size
-    end
-
-    alias_method :orig_rate_unlimited?, :rate_unlimited?
-    def rate_unlimited?
-      return orig_rate_unlimited? if !SiteSetting.flexible_rate_limits_enabled
-      !!RateLimiter.disabled?
-    end
-
-    def wait_seconds
-      seconds_to_wait
-    end
-  }
 }
