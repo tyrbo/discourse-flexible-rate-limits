@@ -1,4 +1,4 @@
-import { default as computed, on } from "ember-addons/ember-computed-decorators";
+import { default as computed, on } from "discourse-common/utils/decorators";
 import Component from "@ember/component";
 import Object from "@ember/object";
 

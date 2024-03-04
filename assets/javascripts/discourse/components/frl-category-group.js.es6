@@ -1,4 +1,4 @@
-import computed from "ember-addons/ember-computed-decorators";
+import computed from "discourse-common/utils/decorators";
 import Component from "@ember/component";
 import { inject as service } from "@ember/service";
 import { action } from "@ember/object";

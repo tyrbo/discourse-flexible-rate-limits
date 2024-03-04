@@ -1,5 +1,5 @@
 import Component from "@ember/component";
-import computed from "ember-addons/ember-computed-decorators";
+import computed from "discourse-common/utils/decorators";
 import { action } from "@ember/object";
 
 export default Component.extend({

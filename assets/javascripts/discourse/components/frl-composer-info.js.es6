@@ -1,5 +1,5 @@
 import Composer from "discourse/models/composer";
-import { default as computed, on, observes } from "ember-addons/ember-computed-decorators";
+import { default as computed, on, observes } from "discourse-common/utils/decorators";
 import { ajax } from "discourse/lib/ajax";
 import Component from "@ember/component";
 import { cancel, later, scheduleOnce } from "@ember/runloop";
